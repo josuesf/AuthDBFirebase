@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">AuthDBFirebase</string>
+    <string name="facebook_app_id">344439716180028</string>
+    <string name="fb_login_protocol_scheme">fb344439716180028</string>
+    <string name="name">Nombre</string>
+    <string name="lastName">Apellidos</string>
+    <string name="age">Edad</string>
+    <string name="birthday">Fecha de Nacimiento</string>
+    <string name="saveData">Guardar Datos</string>
+    <string name="msgErrorSaving">Ocurrio un error, intentelo nuevamente.</string>
+    <string name="msgSuccess">Excelente, sus datos se guardaron correctamente.</string>
+    <string name="titleMain">Informacion</string>
+</resources>

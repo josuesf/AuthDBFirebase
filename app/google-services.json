@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "664771018324",
+    "firebase_url": "https://authdbprueba.firebaseio.com",
+    "project_id": "authdbprueba",
+    "storage_bucket": "authdbprueba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664771018324:android:0221cfb00e278710",
+        "android_client_info": {
+          "package_name": "com.jfl.org.authdbfirebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "664771018324-9aotrmiv9trtuh7gsar03egqe8qbum1c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jfl.org.authdbfirebase",
+            "certificate_hash": "d9ab34e7fa6fa6deda7e81e8a4216e46a585016c"
+          }
+        },
+        {
+          "client_id": "664771018324-bdro7n30um8rst12cmj6gi03li276fp1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPJBMviE3dxQwLvtHS5bOCjGwIWlAh2mQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664771018324-bdro7n30um8rst12cmj6gi03li276fp1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
