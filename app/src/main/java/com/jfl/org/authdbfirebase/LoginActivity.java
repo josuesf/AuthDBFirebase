@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -20,7 +21,6 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String EMAIL = "email";
-    private static final String USER_POSTS = "user_posts";
 
     private CallbackManager mCallbackManager;
     private Context aContext;
@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("Login Firebase");
         aContext=this;
         mCallbackManager = CallbackManager.Factory.create();
 
@@ -46,33 +47,36 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 setResult(RESULT_OK);
-                userId = AccessToken.getCurrentAccessToken().getUserId();
-                finish();
                 goToMainApp();
             }
 
             @Override
             public void onCancel() {
                 setResult(RESULT_CANCELED);
-//                finish();
+                Toast.makeText(LoginActivity.this,getString(R.string.loginCancel),Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onError(FacebookException e) {
                 // Handle exception
+                Toast.makeText(LoginActivity.this,e.toString(),Toast.LENGTH_SHORT).show();
             }
         });
-        Log.i("INFORMATION - FACEBOOK", String.valueOf(AccessToken.getCurrentAccessToken().getUserId()));
     }
 
     private void goToMainApp() {
+        userId = AccessToken.getCurrentAccessToken().getUserId();
+        finish();
         Intent mainIntent = new Intent(this,MainActivity.class);
         mainIntent.putExtra("userId",userId);
         startActivity(mainIntent);
     }
 
     private void loginWithFacebook(){
-        LoginManager.getInstance().logInWithReadPermissions(this,Arrays.asList(EMAIL, USER_POSTS));
+        if(AccessToken.getCurrentAccessToken()!=null){
+            goToMainApp();
+        }else
+            LoginManager.getInstance().logInWithReadPermissions(this,Arrays.asList(EMAIL));
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

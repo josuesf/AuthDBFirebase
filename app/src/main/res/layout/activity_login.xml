@@ -7,37 +7,16 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
-
-    <!--<com.facebook.login.widget.LoginButton-->
-        <!--android:id="@+id/login_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:layout_marginTop="173dp" />-->
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="132dp"
         android:background="@color/colorFb"
         android:padding="10dp"
         android:text="Login with Facebook"
         android:textColor="#FFF" />
 
-    <Button
-        android:id="@+id/btnLoginPhone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center_horizontal"
-        android:text="Login with Telefono"
-        android:background="@color/colorPrimary"
-        android:textColor="#FFF"
-        android:padding="10dp"/>
 
 </RelativeLayout>

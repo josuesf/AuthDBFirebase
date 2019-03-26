@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +21,7 @@ import com.jfl.org.authdbfirebase.entities.UserEntity;
 
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "UserEntityDetail";
 
     private String userId;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSaveData;
     private DatabaseReference mUserReference;
     private ValueEventListener mUserListener;
-    private TextView tvBirthday;
+    private TextView tvBirthday,tvMsgSuccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,53 +46,13 @@ public class MainActivity extends AppCompatActivity {
         etLastName = (EditText)findViewById(R.id.etLastName);
         etAge = (EditText)findViewById(R.id.etAge);
         tvBirthday = (TextView) findViewById(R.id.tvBirthday);
+        tvMsgSuccess = (TextView) findViewById(R.id.tvMsgSuccess);
         //Init Reference User
         mUserReference = mDatabase.child("users").child(userId);
 
         btnSaveData = (Button)findViewById(R.id.btnSaveData);
-        btnSaveData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserEntity userEntity = new UserEntity(
-                        etName.getText().toString(),
-                        etLastName.getText().toString(),
-                        etAge.getText().toString(),
-                        tvBirthday.getText().toString()
-                );
-                try {
-                    mDatabase.child("users").child(userId).setValue(userEntity);
-                    Toast.makeText(MainActivity.this,getString(R.string.msgSuccess),Toast.LENGTH_SHORT).show();
-                }catch (Exception ex){
-                    Toast.makeText(MainActivity.this,getString(R.string.msgErrorSaving),Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-        tvBirthday.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                int mYear, mMonth, mDay;
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(
-                        MainActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                monthOfYear++;
-                                String month = monthOfYear>9?String.valueOf(monthOfYear):("0"+ String.valueOf(monthOfYear));
-                                String day = dayOfMonth>9?String.valueOf(dayOfMonth):("0"+ String.valueOf(dayOfMonth));
-                                tvBirthday.setText(day + "/" + month + "/" + year);
-                            }
-                        }, mYear, mMonth, mDay);
-                datePickerDialog.show();
-            }
-        });
+        btnSaveData.setOnClickListener(this);
+        tvBirthday.setOnClickListener(this);
     }
 
     @Override
@@ -131,5 +92,88 @@ public class MainActivity extends AppCompatActivity {
         if(mUserListener!=null){
             mUserReference.removeEventListener(mUserListener);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LoginManager.getInstance().logOut();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnSaveData:
+                saveData();
+                break;
+            case R.id.tvBirthday:
+                selectDate();
+                break;
+        }
+
+    }
+
+    private void selectDate() {
+        final Calendar c = Calendar.getInstance();
+        int mYear, mMonth, mDay;
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                MainActivity.this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        monthOfYear++;
+                        String month = monthOfYear>9?String.valueOf(monthOfYear):("0"+ String.valueOf(monthOfYear));
+                        String day = dayOfMonth>9?String.valueOf(dayOfMonth):("0"+ String.valueOf(dayOfMonth));
+                        tvBirthday.setText(day + "/" + month + "/" + year);
+                    }
+                }, mYear, mMonth, mDay);
+        datePickerDialog.show();
+    }
+
+    private void saveData() {
+        if(dataValid()) {
+            UserEntity userEntity = new UserEntity(
+                    etName.getText().toString(),
+                    etLastName.getText().toString(),
+                    etAge.getText().toString(),
+                    tvBirthday.getText().toString()
+            );
+            try {
+                mDatabase.child("users").child(userId).setValue(userEntity);
+                tvMsgSuccess.setVisibility(View.VISIBLE);
+                Toast.makeText(MainActivity.this, getString(R.string.msgSuccess), Toast.LENGTH_SHORT).show();
+            } catch (Exception ex) {
+                Toast.makeText(MainActivity.this, getString(R.string.msgErrorSaving), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private boolean dataValid() {
+        boolean isValid = true;
+        if(etName.getText().toString().isEmpty()) {
+            etName.setError(getString(R.string.isRequired));
+            isValid = false;
+        }
+        if(etLastName.getText().toString().isEmpty()) {
+            etLastName.setError(getString(R.string.isRequired));
+            isValid = false;
+        }
+        if(etAge.getText().toString().isEmpty()) {
+            etAge.setError(getString(R.string.isRequired));
+            isValid = false;
+        }
+        try{
+            Integer.parseInt(etAge.getText().toString());
+        }catch (Exception ex){
+            etAge.setError(getString(R.string.shouldBeNumber));
+            isValid = false;
+        }
+        return isValid;
     }
 }

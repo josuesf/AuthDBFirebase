@@ -8,6 +8,9 @@
     <string name="birthday">Fecha de Nacimiento</string>
     <string name="saveData">Guardar Datos</string>
     <string name="msgErrorSaving">Ocurrio un error, intentelo nuevamente.</string>
-    <string name="msgSuccess">Excelente, sus datos se guardaron correctamente.</string>
+    <string name="msgSuccess">Sus datos fueron guardados correctamente.</string>
     <string name="titleMain">Informacion</string>
+    <string name="shouldBeNumber">La edad es un numero</string>
+    <string name="isRequired">Campo requerido</string>
+    <string name="loginCancel">Login Cancelado</string>
 </resources>
